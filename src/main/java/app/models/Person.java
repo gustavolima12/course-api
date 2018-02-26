@@ -1,9 +1,13 @@
 package app.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,17 +20,19 @@ import java.util.Set;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name = "person_type")
+@JsonIgnoreProperties(value = {"created", "lastModified"}, allowGetters = true)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "PERSON")
 public abstract class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull(message = "field name is dsd required")
+    @NotNull(message = "field name is required")
     @Size(min = 4, max = 255, message = "field name must be between 4 and 255 characters")
     private String name;
     @NotNull(message = "field cpf is required")
-    @CPF(message = "field cpf invalid 2")
+    @CPF(message = "field cpf invalid")
     @Column(unique = true)
     private String cpf;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -45,7 +51,13 @@ public abstract class Person {
     @NotNull(message = "field phone is required")
     @NotEmpty
     private String phone;
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     private Date created;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
     private Date lastModified;
 
     public Long getId() {
@@ -129,18 +141,6 @@ public abstract class Person {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        final Date now = new Date();
-        created = now;
-        lastModified = now;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        lastModified = new Date();
     }
 
 }

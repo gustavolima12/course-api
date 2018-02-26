@@ -45,8 +45,6 @@ public class TeacherController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(teacher.getId()).toUri();
 
-        System.out.println(location);
-
         return ResponseEntity.created(location).build();
     }
 
