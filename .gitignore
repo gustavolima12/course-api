@@ -22,7 +22,7 @@ tomcat
 *.sar
 *.class
 
-# Maven 
+# Maven
 target/
 
 # IntelliJ project files 
@@ -30,14 +30,6 @@ target/
 *.iws
 *.ipr
 .idea/
-
-# eclipse project file
-.settings/
-.classpath
-.project
-
-# OS
-.DS_Store
 
 # Misc
 *.swp
