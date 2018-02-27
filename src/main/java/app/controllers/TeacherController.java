@@ -14,10 +14,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.util.APIEndpoints.TEACHER;
+import static app.util.APIEndpoints.TEACHERS;
 
 @RestController
-@RequestMapping(TEACHER)
+@RequestMapping(TEACHERS)
 public class TeacherController {
 
     @Autowired
@@ -26,9 +26,6 @@ public class TeacherController {
     @GetMapping
     public ResponseEntity<List<Teacher>> getTeacher() {
         List<Teacher> teachers = teacherService.getTeachers();
-        if(teachers.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok().body(teachers);
     }
 
