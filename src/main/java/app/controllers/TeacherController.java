@@ -24,7 +24,7 @@ public class TeacherController {
     private TeacherService teacherService;
 
     @GetMapping
-    public ResponseEntity<List<Teacher>> getTeacher() {
+    public ResponseEntity<List<Teacher>> getTeachers() {
         List<Teacher> teachers = teacherService.getTeachers();
         return ResponseEntity.ok().body(teachers);
     }
