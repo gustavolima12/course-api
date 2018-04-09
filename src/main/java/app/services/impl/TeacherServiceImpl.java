@@ -35,6 +35,11 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public List<Teacher> findByNameContainingIgnoreCase(String nome) {
+        return this.teacherRepository.findByNameContainingIgnoreCase(nome);
+    }
+
+    @Override
     public void deleteTeacherById(Long id) {
         this.teacherRepository.delete(id);
     }

@@ -8,6 +8,7 @@
     <artifactId>courses</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- Seta a utilização do java 8 -->
     <build>
         <plugins>
             <plugin>

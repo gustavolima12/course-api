@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.exceptions.ResourceNotFoundException;
 import app.models.Teacher;
 import app.services.TeacherService;
 import app.util.Response;
@@ -29,6 +30,20 @@ public class TeacherController {
         return ResponseEntity.ok().body(teachers);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Teacher> getTeacherById(@PathVariable("id") Long id) {
+        Teacher teacher = teacherService.getTeacherById(id);
+        //verifyIfTeacherExists(teacher);
+        return ResponseEntity.ok().body(teacher);
+    }
+
+    @GetMapping("/findByName/{nome}")
+    public ResponseEntity<List<Teacher>> getTeacherByContainingIgnoreCase(@PathVariable("nome") String name) {
+        List<Teacher> teachers = teacherService.findByNameContainingIgnoreCase(name);
+        //verifyIfTeachersExists(teachers);
+        return ResponseEntity.ok().body(teachers);
+    }
+
     @PostMapping
     public ResponseEntity<?> addTeacher(@Valid @RequestBody Teacher newTeacher, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -43,6 +58,14 @@ public class TeacherController {
                 .buildAndExpand(teacher.getId()).toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    private void verifyIfTeacherExists(Teacher teacher) {
+        if(teacher == null) throw new ResourceNotFoundException("Teacher not found");
+    }
+
+    private void verifyIfTeachersExists(List<Teacher> teachers) {
+        if(teachers.size() == 0) throw new ResourceNotFoundException("Teacher not found");
     }
 
 }
